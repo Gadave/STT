@@ -29,7 +29,14 @@ class MainViewController: UIViewController {
     private func setupContentVC() {
         let contentVC = ContentViewController()
         contentVC.isModalInPresentation = true
-
+        if let sheet = contentVC.sheetPresentationController {
+            sheet.detents = [
+                .customSmall,
+                .customMiddle,
+                .customBig
+            ]
+            sheet.preferredCornerRadius = 20
+        }
         navigationController?.present(contentVC, animated: true)
     }
 }
