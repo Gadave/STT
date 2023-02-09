@@ -29,7 +29,10 @@ class CustomCollectionViewCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        guard let button = button else { return }
+        guard let button = button else {
+            print("error")
+            return
+        }
         button.frame.origin = CGPoint(x: 0, y: 0)
     }
 

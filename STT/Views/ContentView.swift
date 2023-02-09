@@ -13,8 +13,8 @@ class ContentView: UIView {
 
     var didPressApplyButton: (() -> Void)?
 
-    private(set) lazy var topButtons = [CustomButton]()
-    private(set) lazy var bottomButtons = [CustomButton]()
+    lazy var topButtons = [CustomButton]()
+    lazy var bottomButtons = [CustomButton]()
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()

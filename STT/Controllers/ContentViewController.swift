@@ -11,8 +11,9 @@ class ContentViewController: UIViewController {
 
     // MARK: - Properties
 
-    private var selectedButtonElement: Int?
+//    private var selectedButtonElement: Int?
     lazy var customView = view as? ContentView
+    var switchIndicator: Int = 10
 
     // MARK: - Lifecycle
 
@@ -87,17 +88,19 @@ extension ContentViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as? CustomCollectionViewCell else {
             return UICollectionViewCell()
         }
-
+        
         let topButtons = customView.topButtons
         let bottonButtons = customView.bottomButtons
 
         if collectionView == customView.topCollectionView {
             let button = topButtons[indexPath.row]
+            button.setIndexPath(indexPath)
             cell.configureWith(button)
             return cell
         } else {
             let button = bottonButtons[indexPath.row]
             cell.configureWith(button)
+            button.setIndexPath(indexPath)
             return cell
         }
     }
@@ -158,13 +161,15 @@ extension ContentViewController: UISheetPresentationControllerDelegate {
 // MARK: - ButtonDelegate protocol
 
 extension ContentViewController: ButtonDelegate {
-    func handle(_ button: Button) {
+    func handle(_ button: Button, indexPath: IndexPath) {
         guard let customView = customView else { return }
         for item in customView.topButtons {
             if item.button != button {
                 item.setUnselectedState()
             } else {
                 item.switchState()
+                guard let firstButtonIndexPath = customView.topButtons.first?.indexPath else { return }
+                swapeCells(at: firstButtonIndexPath, and: indexPath)
             }
         }
         for item in customView.bottomButtons {
@@ -175,6 +180,32 @@ extension ContentViewController: ButtonDelegate {
             }
         }
     }
+}
+
+// MARK: - Swipe actions
+
+extension ContentViewController {
+    func swapeCells(at indexPath1: IndexPath, and indexPath2: IndexPath) {
+        guard let customView = customView else { return }
+
+        customView.topButtons[indexPath1.item].indexPath = indexPath2
+        customView.topButtons[indexPath2.item].indexPath = indexPath1
+
+        customView.bottomButtons[indexPath1.item].indexPath = indexPath2
+        customView.bottomButtons[indexPath2.item].indexPath = indexPath1
+
+        let tempTop = customView.topButtons[indexPath1.item]
+        customView.topButtons[indexPath1.item] = customView.topButtons[indexPath2.item]
+        customView.topButtons[indexPath2.item] = tempTop
+
+        let tempBottom = customView.bottomButtons[indexPath1.item]
+        customView.bottomButtons[indexPath1.item] = customView.bottomButtons[indexPath2.item]
+        customView.bottomButtons[indexPath2.item] = tempBottom
 
 
+        customView.topCollectionView.performBatchUpdates({
+            customView.topCollectionView.moveItem(at: indexPath1, to: indexPath2)
+            customView.topCollectionView.moveItem(at: indexPath2, to: indexPath1)
+        })
+    }
 }

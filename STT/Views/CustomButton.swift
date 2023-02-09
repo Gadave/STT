@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ButtonDelegate: AnyObject {
-    func handle(_ button: Button)
+    func handle(_ button: Button, indexPath: IndexPath)
 }
 
 class CustomButton: UIButton {
@@ -19,6 +19,7 @@ class CustomButton: UIButton {
     
     let button: Button
     var pressState: PressState
+    var indexPath: IndexPath?
 
     enum PressState {
         case pressed
@@ -63,10 +64,14 @@ class CustomButton: UIButton {
     }
 
     @objc private func buttonTapped() {
-        delegate?.handle(button)
+        guard let indexPath = indexPath else { return }
+        delegate?.handle(button, indexPath: indexPath)
     }
 
     // MARK: - Public methods
+    func setIndexPath(_ indexPath: IndexPath) {
+        self.indexPath = indexPath
+    }
 
     func switchState() {
         if pressState == .pressed {
