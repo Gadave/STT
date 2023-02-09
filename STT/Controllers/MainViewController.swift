@@ -9,6 +9,8 @@ import UIKit
 
 class MainViewController: UIViewController {
 
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setBackgroundImage()
@@ -25,6 +27,8 @@ class MainViewController: UIViewController {
         backgroundImage.contentMode = .scaleToFill
         self.view.insertSubview(backgroundImage, at: 0)
     }
+
+    // MARK: - Prirate methods
 
     private func setupContentVC() {
         let contentVC = ContentViewController()
