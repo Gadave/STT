@@ -15,32 +15,6 @@ class ContentView: UIView {
 
     private(set) lazy var topButtons = [CustomButton]()
     private(set) lazy var bottomButtons = [CustomButton]()
-    
-    lazy var topCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = SystemDesign.viewConfigurations.spacing
-        layout.scrollDirection = .horizontal
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
-        view.showsHorizontalScrollIndicator = false
-        view.showsVerticalScrollIndicator = false
-        view.backgroundColor = .white
-        view.isScrollEnabled = true
-        return view
-    }()
-
-    lazy var bottomCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = SystemDesign.viewConfigurations.spacing
-        layout.scrollDirection = .horizontal
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.register(SecondCustomCollectionViewCell.self, forCellWithReuseIdentifier: SecondCustomCollectionViewCell.identifier)
-        view.showsHorizontalScrollIndicator = false
-        view.showsVerticalScrollIndicator = false
-        view.isScrollEnabled = true
-        view.isHidden = true
-        return view
-    }()
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -56,16 +30,6 @@ class ContentView: UIView {
         label.numberOfLines = .zero
         label.font = SystemDesign.Fonts.small
         label.textColor = SystemDesign.Colors.gray2
-        return label
-    }()
-
-    lazy var bottomParagraphLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Получай стипендию, выстраивай удобный график, работай на современном железе."
-        label.numberOfLines = .zero
-        label.font = SystemDesign.Fonts.small
-        label.textColor = SystemDesign.Colors.gray2
-        label.isHidden = true
         return label
     }()
 
@@ -87,6 +51,41 @@ class ContentView: UIView {
         label.text = "Хочешь к нам?"
         label.font = SystemDesign.Fonts.small
         label.textColor = SystemDesign.Colors.gray2
+        return label
+    }()
+
+    lazy var topCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = SystemDesign.viewConfigurations.spacing
+        layout.scrollDirection = .horizontal
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        view.backgroundColor = .white
+        view.isScrollEnabled = true
+        return view
+    }()
+
+    lazy var bottomCollectionView: UICollectionView = {
+        let layout = BottomCollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        view.isScrollEnabled = true
+        view.isHidden = true
+        return view
+    }()
+
+    lazy var bottomParagraphLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Получай стипендию, выстраивай удобный график, работай на современном железе."
+        label.numberOfLines = .zero
+        label.font = SystemDesign.Fonts.small
+        label.textColor = SystemDesign.Colors.gray2
+        label.isHidden = true
         return label
     }()
 
@@ -156,7 +155,7 @@ class ContentView: UIView {
         bottomParagraphLabel.topAnchor.constraint(equalTo: topCollectionView.bottomAnchor,constant: spacing * 2).isActive = true
 
         bottomCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        bottomCollectionView.heightAnchor.constraint(equalToConstant: buttonHeight * 2 + spacing).isActive = true
+        bottomCollectionView.heightAnchor.constraint(equalToConstant: buttonHeight * 2 + spacing * 2).isActive = true
         bottomCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding).isActive = true
         bottomCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         bottomCollectionView.topAnchor.constraint(equalTo: bottomParagraphLabel.bottomAnchor,constant: spacing).isActive = true

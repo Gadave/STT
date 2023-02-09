@@ -48,6 +48,10 @@ class ContentViewController: UIViewController {
         customView.bottomCollectionView.delegate = self
         customView.bottomCollectionView.dataSource = self
 
+        if let bottomCollectionLayout = customView.bottomCollectionView.collectionViewLayout as? BottomCollectionViewFlowLayout {
+            bottomCollectionLayout.delegate = self
+        }
+
         for button in customView.topButtons {
             button.delegate = self
         }
@@ -58,57 +62,73 @@ class ContentViewController: UIViewController {
 
 }
 
-extension ContentViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+// MARK: - UICollectionViewDelegate protocol
+
+extension ContentViewController: UICollectionViewDelegate {
+
+}
+
+// MARK: - UICollectionViewDataSource protocol
+
+extension ContentViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let topButtons = customView?.topButtons,
-              let bottomButtons = customView?.bottomButtons else {
-            return .zero
-        }
-        if collectionView == customView?.topCollectionView {
-            return topButtons.count
+        guard let customView = customView else { return .zero }
+
+        if collectionView == customView.topCollectionView {
+            return customView.topButtons.count
         } else {
-            return bottomButtons.count
+            return customView.bottomButtons.count
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == customView?.topCollectionView {
-            guard let buttons =  customView?.topButtons else {
-                return UICollectionViewCell()
-            }
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as? CustomCollectionViewCell else {
-                print("Error")
-                return UICollectionViewCell()
-            }
-            let button = buttons[indexPath.row]
+        guard let customView = customView else { return UICollectionViewCell() }
+
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as? CustomCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+
+        let topButtons = customView.topButtons
+        let bottonButtons = customView.bottomButtons
+
+        if collectionView == customView.topCollectionView {
+            let button = topButtons[indexPath.row]
             cell.configureWith(button)
             return cell
         } else {
-            guard let buttons =  customView?.bottomButtons else {
-                return UICollectionViewCell()
-            }
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SecondCustomCollectionViewCell.identifier, for: indexPath) as? SecondCustomCollectionViewCell else {
-                return UICollectionViewCell()
-            }
-            let button = buttons[indexPath.row]
+            let button = bottonButtons[indexPath.row]
             cell.configureWith(button)
             return cell
         }
     }
 
+
+}
+
+// MARK: - UISheetPresentationControllerDelegate protocol
+
+extension ContentViewController:  UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let topButton = customView?.topButtons[indexPath.row],
-              let bottomButton = customView?.bottomButtons[indexPath.row] else {
+        guard let topButton = customView?.topButtons[indexPath.row] else {
             return CGSize()
         }
-        if collectionView == customView?.topCollectionView {
-            return CGSize(width: topButton.getWidth(), height: CustomButton.height)
-        } else {
-            return CGSize(width: bottomButton.getWidth(), height: CustomButton.height)
-        }
+        return CGSize(width: topButton.getWidth(), height: CustomButton.height)
     }
 }
 
+// MARK: - BottomCollectionViewFlowLayoutDelegate protocol
+
+extension ContentViewController: BottomCollectionViewFlowLayoutDelegate {
+    func collectionView(_ collectionView: UICollectionView, sizeForButtonAtIndexPath indexPath: IndexPath) -> CGSize {
+        guard let bottomButton = customView?.bottomButtons[indexPath.row] else {
+            return CGSize()
+        }
+        return CGSize(width: bottomButton.getWidth(), height: CustomButton.height)
+    }
+
+}
+
+// MARK: - UISheetPresentationControllerDelegate protocol
 
 extension ContentViewController: UISheetPresentationControllerDelegate {
     func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
@@ -135,17 +155,23 @@ extension ContentViewController: UISheetPresentationControllerDelegate {
 
 }
 
+// MARK: - ButtonDelegate protocol
+
 extension ContentViewController: ButtonDelegate {
     func handle(_ button: Button) {
         guard let customView = customView else { return }
         for item in customView.topButtons {
             if item.button != button {
                 item.setUnselectedState()
+            } else {
+                item.switchState()
             }
         }
         for item in customView.bottomButtons {
             if item.button != button {
                 item.setUnselectedState()
+            } else {
+                item.switchState()
             }
         }
     }

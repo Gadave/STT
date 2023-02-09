@@ -15,8 +15,9 @@ class CustomButton: UIButton {
 
     // MARK: - Properties
 
-    let button: Button
     static let height: CGFloat = 44
+    
+    let button: Button
     var pressState: PressState
 
     enum PressState {
@@ -61,7 +62,13 @@ class CustomButton: UIButton {
         }
     }
 
-    private func switchState() {
+    @objc private func buttonTapped() {
+        delegate?.handle(button)
+    }
+
+    // MARK: - Public methods
+
+    func switchState() {
         if pressState == .pressed {
             pressState = .normal
             setColors()
@@ -71,15 +78,13 @@ class CustomButton: UIButton {
         }
     }
 
-    @objc private func buttonTapped() {
-        delegate?.handle(button)
-        switchState()
-    }
-
-    // MARK: - Public methods
-
     func setUnselectedState() {
         pressState = .normal
+        setColors()
+    }
+
+    func setSelectedState() {
+        pressState = .pressed
         setColors()
     }
 

@@ -33,15 +33,11 @@ class CustomCollectionViewCell: UICollectionViewCell {
         button.frame.origin = CGPoint(x: 0, y: 0)
     }
 
-    // MARK: - Private methods
+    // MARK: - Public methods
 
     func configureWith(_ button : CustomButton) {
         self.button = button
         contentView.addSubview(button)
     }
-
-}
-
-class SecondCustomCollectionViewCell: CustomCollectionViewCell {
 
 }

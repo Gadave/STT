@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F7A838E62994DABD00E2F36A /* BottomCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A838E52994DABD00E2F36A /* BottomCollectionViewFlowLayout.swift */; };
 		F7C2E3CE2993C3C30029F520 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C2E3CD2993C3C30029F520 /* AppDelegate.swift */; };
 		F7C2E3D02993C3C30029F520 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C2E3CF2993C3C30029F520 /* SceneDelegate.swift */; };
 		F7C2E3D72993C3C50029F520 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7C2E3D62993C3C50029F520 /* Assets.xcassets */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F7A838E52994DABD00E2F36A /* BottomCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		F7C2E3CA2993C3C30029F520 /* STT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7C2E3CD2993C3C30029F520 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F7C2E3CF2993C3C30029F520 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				F7C2E3E92993CA8E0029F520 /* CustomButton.swift */,
+				F7A838E52994DABD00E2F36A /* BottomCollectionViewFlowLayout.swift */,
 				F7C2E3F12993CBEA0029F520 /* ContentView.swift */,
 				F7C2E3F32993CC2B0029F520 /* CustomCollectionViewCell.swift */,
 			);
@@ -199,6 +202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7C2E3E52993C8130029F520 /* ContentViewController.swift in Sources */,
+				F7A838E62994DABD00E2F36A /* BottomCollectionViewFlowLayout.swift in Sources */,
 				F7C2E3F42993CC2B0029F520 /* CustomCollectionViewCell.swift in Sources */,
 				F7C2E3F02993CB240029F520 /* String + width.swift in Sources */,
 				F7C2E3ED2993CAD10029F520 /* SystemDesign.swift in Sources */,
