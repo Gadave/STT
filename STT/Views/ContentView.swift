@@ -14,7 +14,7 @@ class ContentView: UIView {
     var didPressApplyButton: (() -> Void)?
 
     lazy var topButtons = [CustomButton]()
-    lazy var bottomButtons = [CustomButton]()
+    lazy var bottonButtons = [CustomButton]()
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -33,7 +33,7 @@ class ContentView: UIView {
         return label
     }()
 
-    private lazy var bottomContainer = UIView()
+    private lazy var bottonContainer = UIView()
 
     private lazy var applyButton: UIButton = {
         let button = UIButton()
@@ -67,19 +67,20 @@ class ContentView: UIView {
         return view
     }()
 
-    lazy var bottomCollectionView: UICollectionView = {
-        let layout = BottomCollectionViewFlowLayout()
+    lazy var bottonCollectionView: UICollectionView = {
+        let layout = BottonCollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
         view.isScrollEnabled = true
+        view.backgroundColor = .white
         view.isHidden = true
         return view
     }()
 
-    lazy var bottomParagraphLabel: UILabel = {
+    lazy var bottonParagraphLabel: UILabel = {
         let label = UILabel()
         label.text = "Получай стипендию, выстраивай удобный график, работай на современном железе."
         label.numberOfLines = .zero
@@ -108,7 +109,7 @@ class ContentView: UIView {
 
     private func setButtons() {
         topButtons = Button.allCases.map( { CustomButton($0) } )
-        bottomButtons = Button.allCases.map( { CustomButton($0) } )
+        bottonButtons = Button.allCases.map( { CustomButton($0) } )
     }
 
     @objc private func applyButtonTapped() {
@@ -118,14 +119,14 @@ class ContentView: UIView {
     private func addSubviews() {
         addSubview(titleLabel)
         addSubview(topParagraphLabel)
-        addSubview(bottomParagraphLabel)
+        addSubview(bottonParagraphLabel)
 
         addSubview(topCollectionView)
-        addSubview(bottomCollectionView)
+        addSubview(bottonCollectionView)
 
-        addSubview(bottomContainer)
-        bottomContainer.addSubview(applyButton)
-        bottomContainer.addSubview(questionLabel)
+        addSubview(bottonContainer)
+        bottonContainer.addSubview(applyButton)
+        bottonContainer.addSubview(questionLabel)
     }
 
     private func setViewsConstraints() {
@@ -149,16 +150,16 @@ class ContentView: UIView {
         topCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         topCollectionView.topAnchor.constraint(equalTo: topParagraphLabel.bottomAnchor,constant: spacing).isActive = true
 
-        bottomParagraphLabel.translatesAutoresizingMaskIntoConstraints = false
-        bottomParagraphLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding).isActive = true
-        bottomParagraphLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding).isActive = true
-        bottomParagraphLabel.topAnchor.constraint(equalTo: topCollectionView.bottomAnchor,constant: spacing * 2).isActive = true
+        bottonParagraphLabel.translatesAutoresizingMaskIntoConstraints = false
+        bottonParagraphLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding).isActive = true
+        bottonParagraphLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding).isActive = true
+        bottonParagraphLabel.topAnchor.constraint(equalTo: topCollectionView.bottomAnchor,constant: spacing * 2).isActive = true
 
-        bottomCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        bottomCollectionView.heightAnchor.constraint(equalToConstant: buttonHeight * 2 + spacing * 2).isActive = true
-        bottomCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding).isActive = true
-        bottomCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        bottomCollectionView.topAnchor.constraint(equalTo: bottomParagraphLabel.bottomAnchor,constant: spacing).isActive = true
+        bottonCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        bottonCollectionView.heightAnchor.constraint(equalToConstant: buttonHeight * 2 + spacing).isActive = true
+        bottonCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding).isActive = true
+        bottonCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        bottonCollectionView.topAnchor.constraint(equalTo: bottonParagraphLabel.bottomAnchor,constant: spacing).isActive = true
     }
 
     private func setFixedViewsConstraints() {
@@ -166,22 +167,22 @@ class ContentView: UIView {
         let sectionHeight: CGFloat = 60
         let applyButtonWidth: CGFloat = 220
 
-        bottomContainer.translatesAutoresizingMaskIntoConstraints = false
-        bottomContainer.widthAnchor.constraint(equalTo: widthAnchor, constant: -padding * 2).isActive = true
-        bottomContainer.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        bottomContainer.heightAnchor.constraint(equalToConstant: sectionHeight).isActive = true
-        bottomContainer.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding).isActive = true
+        bottonContainer.translatesAutoresizingMaskIntoConstraints = false
+        bottonContainer.widthAnchor.constraint(equalTo: widthAnchor, constant: -padding * 2).isActive = true
+        bottonContainer.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        bottonContainer.heightAnchor.constraint(equalToConstant: sectionHeight).isActive = true
+        bottonContainer.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding).isActive = true
 
         questionLabel.translatesAutoresizingMaskIntoConstraints = false
         questionLabel.heightAnchor.constraint(equalToConstant: sectionHeight).isActive = true
-        questionLabel.leadingAnchor.constraint(equalTo: bottomContainer.leadingAnchor).isActive = true
+        questionLabel.leadingAnchor.constraint(equalTo: bottonContainer.leadingAnchor).isActive = true
         questionLabel.trailingAnchor.constraint(equalTo: applyButton.leadingAnchor).isActive = true
         questionLabel.centerYAnchor.constraint(equalTo: applyButton.centerYAnchor).isActive = true
 
         applyButton.translatesAutoresizingMaskIntoConstraints = false
         applyButton.widthAnchor.constraint(equalToConstant: applyButtonWidth).isActive = true
         applyButton.heightAnchor.constraint(equalToConstant: sectionHeight).isActive = true
-        applyButton.bottomAnchor.constraint(equalTo: bottomContainer.bottomAnchor).isActive = true
-        applyButton.trailingAnchor.constraint(equalTo: bottomContainer.trailingAnchor).isActive = true
+        applyButton.bottomAnchor.constraint(equalTo: bottonContainer.bottomAnchor).isActive = true
+        applyButton.trailingAnchor.constraint(equalTo: bottonContainer.trailingAnchor).isActive = true
     }
 }

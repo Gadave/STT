@@ -16,6 +16,12 @@ class CustomButton: UIButton {
     // MARK: - Properties
 
     static let height: CGFloat = 44
+    lazy var width: CGFloat = {
+        let spacing = SystemDesign.viewConfigurations.spacing
+        let font = SystemDesign.Fonts.middle
+        let width = button.rawValue.width(height: CustomButton.height, font: font) + spacing * 4
+        return width
+    }()
     
     let button: Button
     var pressState: PressState
@@ -49,7 +55,6 @@ class CustomButton: UIButton {
         setTitle(button.rawValue, for: .normal)
         titleLabel?.font = SystemDesign.Fonts.middle
         layer.cornerRadius = 12
-        frame.size = CGSize(width: getWidth(), height: CustomButton.height)
     }
 
     private func setColors() {
@@ -92,10 +97,5 @@ class CustomButton: UIButton {
         pressState = .pressed
         setColors()
     }
-
-    func getWidth() -> CGFloat {
-        let spacing = SystemDesign.viewConfigurations.spacing
-        return button.rawValue.width(height: CustomButton.height, font: SystemDesign.Fonts.middle) + spacing * 4
-    }
-
+    
 }

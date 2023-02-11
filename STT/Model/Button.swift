@@ -18,6 +18,7 @@ enum Button: String, Equatable {
     case Backend
     case Project
     case Product
+    case empty
 }
 
 extension Button: CaseIterable {

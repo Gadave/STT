@@ -1,5 +1,5 @@
 //
-//  BottomCollectionViewFlowLayout.swift
+//  BottonCollectionViewFlowLayout.swift
 //  STT
 //
 //  Created by Георгий Давыденко on 09.02.2023.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol BottomCollectionViewFlowLayoutDelegate: AnyObject {
+protocol BottonCollectionViewFlowLayoutDelegate: AnyObject {
     func collectionView(_ collectionView: UICollectionView, sizeForButtonAtIndexPath indexPath: IndexPath) -> CGSize
 }
 
-class BottomCollectionViewFlowLayout: UICollectionViewFlowLayout {
+class BottonCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
-    weak var delegate: BottomCollectionViewFlowLayoutDelegate?
+    weak var delegate: BottonCollectionViewFlowLayoutDelegate?
 
     private let numberOfRows = 2
     private let cellSpacing: CGFloat = SystemDesign.viewConfigurations.spacing
@@ -39,10 +39,14 @@ class BottomCollectionViewFlowLayout: UICollectionViewFlowLayout {
             return
         }
 
-        let columnHeight = contentHeight / CGFloat(numberOfRows)
+        let columnHeight = (contentHeight - cellSpacing) / CGFloat(numberOfRows)
         var yOffset: [CGFloat] = []
         for row in 0..<numberOfRows {
-            yOffset.append(CGFloat(row) * columnHeight)
+            if row == 0 {
+                yOffset.append(CGFloat(row) * columnHeight)
+            } else {
+                yOffset.append(CGFloat(row) * columnHeight + cellSpacing)
+            }
         }
 
         var row = 0
@@ -52,19 +56,19 @@ class BottomCollectionViewFlowLayout: UICollectionViewFlowLayout {
             let indexPath = IndexPath(item: item, section: 0)
 
             guard let buttonSize = delegate?.collectionView(collectionView, sizeForButtonAtIndexPath: indexPath) else { return }
-            let width = cellSpacing + buttonSize.width
+            let width = buttonSize.width
             let frame = CGRect(x: xOffset[row],
                                y: yOffset[row],
                                width: width,
                                height: columnHeight)
-            let insetFrame = frame.insetBy(dx: cellSpacing, dy: cellSpacing)
+            let insetFrame = frame.insetBy(dx: .zero, dy: .zero)
 
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = insetFrame
             cache.append(attributes)
 
             contentWidth = max(contentWidth, frame.maxX)
-            xOffset[row] = xOffset[row] + width
+            xOffset[row] = xOffset[row] + width + cellSpacing
 
             row = row < (numberOfRows - 1) ? (row + 1) : 0
         }
