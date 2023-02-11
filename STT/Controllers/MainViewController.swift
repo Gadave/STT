@@ -8,15 +8,17 @@
 import UIKit
 
 class MainViewController: UIViewController {
-
+    
     // MARK: - Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setBackgroundImage()
         setupContentVC()
     }
-
+    
+    // MARK: - Prirate methods
+    
     private func setBackgroundImage() {
         let frame = CGRect(x: .zero,
                            y: .zero,
@@ -25,11 +27,9 @@ class MainViewController: UIViewController {
         let backgroundImage = UIImageView(frame: frame)
         backgroundImage.image = UIImage(named: "backgroungImage")
         backgroundImage.contentMode = .scaleToFill
-        self.view.insertSubview(backgroundImage, at: 0)
+        self.view.insertSubview(backgroundImage, at: .zero)
     }
-
-    // MARK: - Prirate methods
-
+    
     private func setupContentVC() {
         let contentVC = ContentViewController()
         contentVC.isModalInPresentation = true

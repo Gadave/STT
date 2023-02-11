@@ -11,10 +11,8 @@ class ContentViewController: UIViewController {
 
     // MARK: - Properties
 
-//    private var selectedButtonElement: Int?
     lazy var customView = view as? ContentView
-    var switchIndicator: Int = 10
-    var selectedItem: String?
+    private var selectedItem: String?
 
     // MARK: - Lifecycle
 
@@ -69,15 +67,166 @@ class ContentViewController: UIViewController {
         }
     }
 
+
+}
+
+// MARK: - UICollectionViewDelegate protocol
+
+extension ContentViewController: UICollectionViewDelegate {
+
+}
+
+// MARK: - UICollectionViewDataSource protocol
+
+extension ContentViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let customView = customView else { return .zero }
+
+        if collectionView == customView.topCollectionView {
+            return customView.topButtons.count
+        } else {
+            return customView.bottonButtons.count
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let customView = customView,
+              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as? CustomCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        let topButtons = customView.topButtons
+        let bottonButtons = customView.bottonButtons
+
+        if collectionView == customView.topCollectionView {
+            let button = topButtons[indexPath.row]
+            button.setIndexPath(indexPath)
+            cell.configureWith(button)
+            return cell
+        } else {
+            let button = bottonButtons[indexPath.row]
+            cell.configureWith(button)
+            setButtonVisibility(with: indexPath, isVisble: checkBottonButtonScreenPosition(at: indexPath))
+            button.setIndexPath(indexPath)
+            return cell
+        }
+    }
+
+
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout protocol
+
+extension ContentViewController:  UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let topButton = customView?.topButtons[indexPath.row] else {
+            return CGSize()
+        }
+        return CGSize(width: topButton.width, height: CustomButton.height)
+    }
+
+
+}
+
+// MARK: - BottomCollectionViewFlowLayoutDelegate protocol
+
+extension ContentViewController: BottonCollectionViewFlowLayoutDelegate {
+    func collectionView(_ collectionView: UICollectionView, sizeForButtonAtIndexPath indexPath: IndexPath) -> CGSize {
+        guard let bottomButton = customView?.bottonButtons[indexPath.row] else {
+            return CGSize()
+        }
+        return CGSize(width: bottomButton.width, height: CustomButton.height)
+    }
+
+
+}
+// MARK: - UISheetPresentationControllerDelegate protocol
+
+extension ContentViewController: UISheetPresentationControllerDelegate {
+    func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
+        guard let presentationController = presentationController as? UISheetPresentationController else { return }
+        presentationController.animateChanges {
+            if presentationController.selectedDetentIdentifier == UISheetPresentationController.Detent.customSmall.identifier {
+                UIView.animate(withDuration: 0.3) {
+                    self.customView?.bottonParagraphLabel.alpha = .zero
+                    self.customView?.bottonCollectionView.alpha = .zero
+                } completion: { _ in
+                    self.customView?.bottonParagraphLabel.isHidden = true
+                    self.customView?.bottonCollectionView.isHidden = true
+                }
+            } else {
+                UIView.animate(withDuration: 0.3) {
+                    self.customView?.bottonParagraphLabel.isHidden = false
+                    self.customView?.bottonCollectionView.isHidden = false
+                    self.customView?.bottonParagraphLabel.alpha = 1
+                    self.customView?.bottonCollectionView.alpha = 1
+                }
+            }
+        }
+    }
+
+
+}
+
+// MARK: - ButtonDelegate protocol
+
+extension ContentViewController: ButtonDelegate {
+    func handle(_ internship: Internship, indexPath: IndexPath) {
+        guard let customView = customView else { return }
+        for item in customView.topButtons {
+            if item.internship != internship {
+                item.setUnselectedState()
+            } else {
+                item.switchState()
+                guard let firstButtonIndexPath = customView.topButtons.first?.indexPath else { return }
+                swapeTopCells(at: firstButtonIndexPath, and: indexPath)
+                customView.topCollectionView.scrollToItem(at: IndexPath(row: .zero, section: .zero), at: .left, animated: true)
+                setSecetedItem(item.internship.rawValue)
+            }
+        }
+        for item in customView.bottonButtons {
+            if item.internship != internship {
+                item.setUnselectedState()
+            } else {
+                item.switchState()
+            }
+        }
+    }
+
+    func setSecetedItem(_ item: String) {
+        if selectedItem == nil || selectedItem != item {
+            selectedItem = item
+        } else {
+            selectedItem = nil
+        }
+    }
+
+    func swapeTopCells(at indexPath1: IndexPath, and indexPath2: IndexPath) {
+        guard let customView = customView else { return }
+
+        customView.topButtons[indexPath1.item].indexPath = indexPath2
+        customView.topButtons[indexPath2.item].indexPath = indexPath1
+
+        let tempTop = customView.topButtons[indexPath1.item]
+        customView.topButtons[indexPath1.item] = customView.topButtons[indexPath2.item]
+        customView.topButtons[indexPath2.item] = tempTop
+
+        customView.topCollectionView.performBatchUpdates({
+            customView.topCollectionView.moveItem(at: indexPath1, to: indexPath2)
+            customView.topCollectionView.moveItem(at: indexPath2, to: indexPath1)
+        })
+    }
+
+
 }
 
 // MARK: - UIScrollViewDelegate protocol
 
 extension ContentViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let bottomCollectionView = customView?.bottonCollectionView else { return }
-        if scrollView == bottomCollectionView {
-            let visibleIndexPaths = bottomCollectionView.indexPathsForVisibleItems
+        guard let bottonCollectionView = customView?.bottonCollectionView else { return }
+        if scrollView == bottonCollectionView {
+            let visibleIndexPaths = bottonCollectionView.indexPathsForVisibleItems
             for indexPath in visibleIndexPaths {
                 setButtonVisibility(with: indexPath, isVisble: checkBottonButtonScreenPosition(at: indexPath))
             }
@@ -112,154 +261,6 @@ extension ContentViewController: UIScrollViewDelegate {
             }
         }
     }
-}
-
-// MARK: - UICollectionViewDelegate protocol
-
-extension ContentViewController: UICollectionViewDelegate {
-
-}
-
-// MARK: - UICollectionViewDataSource protocol
-
-extension ContentViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let customView = customView else { return .zero }
-
-        if collectionView == customView.topCollectionView {
-            return customView.topButtons.count
-        } else {
-            return customView.bottonButtons.count
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let customView = customView else { return UICollectionViewCell() }
-
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as? CustomCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-        
-        let topButtons = customView.topButtons
-        let bottonButtons = customView.bottonButtons
-
-        if collectionView == customView.topCollectionView {
-            let button = topButtons[indexPath.row]
-            button.setIndexPath(indexPath)
-            cell.configureWith(button)
-            return cell
-        } else {
-            let button = bottonButtons[indexPath.row]
-            cell.configureWith(button)
-            setButtonVisibility(with: indexPath, isVisble: checkBottonButtonScreenPosition(at: indexPath))
-            button.setIndexPath(indexPath)
-            return cell
-        }
-    }
 
 
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout protocol
-
-extension ContentViewController:  UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let topButton = customView?.topButtons[indexPath.row] else {
-            return CGSize()
-        }
-        return CGSize(width: topButton.width, height: CustomButton.height)
-    }
-}
-
-// MARK: - BottomCollectionViewFlowLayoutDelegate protocol
-
-extension ContentViewController: BottonCollectionViewFlowLayoutDelegate {
-    func collectionView(_ collectionView: UICollectionView, sizeForButtonAtIndexPath indexPath: IndexPath) -> CGSize {
-        guard let bottomButton = customView?.bottonButtons[indexPath.row] else {
-            return CGSize()
-        }
-        return CGSize(width: bottomButton.width, height: CustomButton.height)
-    }
-
-}
-
-// MARK: - UISheetPresentationControllerDelegate protocol
-
-extension ContentViewController: UISheetPresentationControllerDelegate {
-    func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
-        guard let presentationController = presentationController as? UISheetPresentationController else { return }
-        presentationController.animateChanges {
-            if presentationController.selectedDetentIdentifier == UISheetPresentationController.Detent.customSmall.identifier {
-                UIView.animate(withDuration: 0.3) {
-                    self.customView?.bottonParagraphLabel.alpha = .zero
-                    self.customView?.bottonCollectionView.alpha = .zero
-                } completion: { _ in
-                    self.customView?.bottonParagraphLabel.isHidden = true
-                    self.customView?.bottonCollectionView.isHidden = true
-                }
-            } else {
-                UIView.animate(withDuration: 0.3) {
-                    self.customView?.bottonParagraphLabel.isHidden = false
-                    self.customView?.bottonCollectionView.isHidden = false
-                    self.customView?.bottonParagraphLabel.alpha = 1
-                    self.customView?.bottonCollectionView.alpha = 1
-                }
-            }
-        }
-    }
-
-}
-
-// MARK: - ButtonDelegate protocol
-
-extension ContentViewController: ButtonDelegate {
-    func handle(_ button: Button, indexPath: IndexPath) {
-        guard let customView = customView else { return }
-        for item in customView.topButtons {
-            if item.button != button {
-                item.setUnselectedState()
-            } else {
-                item.switchState()
-                guard let firstButtonIndexPath = customView.topButtons.first?.indexPath else { return }
-                swapeTopCells(at: firstButtonIndexPath, and: indexPath)
-                customView.topCollectionView.scrollToItem(at: IndexPath(row: .zero, section: .zero), at: .left, animated: true)
-                setSecetedItem(item.button.rawValue)
-            }
-        }
-        for item in customView.bottonButtons {
-            if item.button != button {
-                item.setUnselectedState()
-            } else {
-                item.switchState()
-            }
-        }
-    }
-
-    func setSecetedItem(_ item: String) {
-        if selectedItem == nil || selectedItem != item {
-            selectedItem = item
-        } else {
-            selectedItem = nil
-        }
-    }
-}
-
-// MARK: - Swipe actions
-
-extension ContentViewController {
-    func swapeTopCells(at indexPath1: IndexPath, and indexPath2: IndexPath) {
-        guard let customView = customView else { return }
-
-        customView.topButtons[indexPath1.item].indexPath = indexPath2
-        customView.topButtons[indexPath2.item].indexPath = indexPath1
-
-        let tempTop = customView.topButtons[indexPath1.item]
-        customView.topButtons[indexPath1.item] = customView.topButtons[indexPath2.item]
-        customView.topButtons[indexPath2.item] = tempTop
-
-        customView.topCollectionView.performBatchUpdates({
-            customView.topCollectionView.moveItem(at: indexPath1, to: indexPath2)
-            customView.topCollectionView.moveItem(at: indexPath2, to: indexPath1)
-        })
-    }
 }

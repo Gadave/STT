@@ -1,5 +1,5 @@
 //
-//  Button.swift
+//  Internship.swift
 //  STT
 //
 //  Created by Георгий Давыденко on 08.02.2023.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Button: String, Equatable {
+enum Internship: String, Equatable {
     case IOS
     case Android
     case Design
@@ -18,11 +18,11 @@ enum Button: String, Equatable {
     case Backend
     case Project
     case Product
-    case empty
+    case none
 }
 
-extension Button: CaseIterable {
-    static var allCases: [Button] {
+extension Internship: CaseIterable {
+    static var allCases: [Internship] {
         [.IOS,
          .Android,
          .Design,
@@ -32,7 +32,8 @@ extension Button: CaseIterable {
          .Frontend,
          .Backend,
          .Project,
-         .Product
-        ]
+         .Product]
     }
+    
+    
 }

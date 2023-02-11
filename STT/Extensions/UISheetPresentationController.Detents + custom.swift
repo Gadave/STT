@@ -13,16 +13,18 @@ extension UISheetPresentationController.Detent {
             0.41 * context.maximumDetentValue
         }
     }
-
+    
     static var customMiddle: UISheetPresentationController.Detent {
         return .custom(identifier: Identifier("CustomMiddle")) { context in
             0.63 * context.maximumDetentValue
         }
     }
-
+    
     static var customBig: UISheetPresentationController.Detent {
         return .custom(identifier: Identifier("CustomBig")) { context in
             0.99 * context.maximumDetentValue
         }
     }
+    
+    
 }

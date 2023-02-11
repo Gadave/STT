@@ -20,7 +20,7 @@
 		F7C2E3F02993CB240029F520 /* String + width.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C2E3EF2993CB240029F520 /* String + width.swift */; };
 		F7C2E3F22993CBEA0029F520 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C2E3F12993CBEA0029F520 /* ContentView.swift */; };
 		F7C2E3F42993CC2B0029F520 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C2E3F32993CC2B0029F520 /* CustomCollectionViewCell.swift */; };
-		F7C2E3F62993D7920029F520 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C2E3F52993D7920029F520 /* Button.swift */; };
+		F7C2E3F62993D7920029F520 /* Internship.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C2E3F52993D7920029F520 /* Internship.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,7 +39,7 @@
 		F7C2E3EF2993CB240029F520 /* String + width.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + width.swift"; sourceTree = "<group>"; };
 		F7C2E3F12993CBEA0029F520 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F7C2E3F32993CC2B0029F520 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
-		F7C2E3F52993D7920029F520 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		F7C2E3F52993D7920029F520 /* Internship.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Internship.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,10 +107,9 @@
 		F7C2E3EB2993CA950029F520 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F7FB393F2997BC7300C18A49 /* CollectionView */,
 				F7C2E3E92993CA8E0029F520 /* CustomButton.swift */,
-				F7A838E52994DABD00E2F36A /* BottonCollectionViewFlowLayout.swift */,
 				F7C2E3F12993CBEA0029F520 /* ContentView.swift */,
-				F7C2E3F32993CC2B0029F520 /* CustomCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -126,9 +125,18 @@
 		F7C2E3F72993D7990029F520 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				F7C2E3F52993D7920029F520 /* Button.swift */,
+				F7C2E3F52993D7920029F520 /* Internship.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		F7FB393F2997BC7300C18A49 /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				F7A838E52994DABD00E2F36A /* BottonCollectionViewFlowLayout.swift */,
+				F7C2E3F32993CC2B0029F520 /* CustomCollectionViewCell.swift */,
+			);
+			path = CollectionView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,7 +218,7 @@
 				F7C2E3EA2993CA8E0029F520 /* CustomButton.swift in Sources */,
 				F7C2E3F22993CBEA0029F520 /* ContentView.swift in Sources */,
 				F7C2E3CE2993C3C30029F520 /* AppDelegate.swift in Sources */,
-				F7C2E3F62993D7920029F520 /* Button.swift in Sources */,
+				F7C2E3F62993D7920029F520 /* Internship.swift in Sources */,
 				F7C2E3D02993C3C30029F520 /* SceneDelegate.swift in Sources */,
 				F7C2E3E72993C9700029F520 /* UISheetPresentationController.Detents + custom.swift in Sources */,
 			);

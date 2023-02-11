@@ -8,7 +8,6 @@
 import UIKit
 
 enum SystemDesign {
-
     enum Colors {
         static let black = UIColor(cgColor: CGColor(red: 49 / 255,
                                                     green: 49 / 255,
@@ -23,16 +22,18 @@ enum SystemDesign {
                                                     blue: 155 / 255,
                                                     alpha: 1))
     }
-
+    
     enum Fonts {
         static let huge = UIFont.systemFont(ofSize: 24, weight: .bold)
         static let big = UIFont.systemFont(ofSize: 16, weight: .medium)
         static let middle = UIFont.systemFont(ofSize: 14, weight: .medium)
         static let small = UIFont.systemFont(ofSize: 14, weight: .regular)
     }
-
+    
     enum viewConfigurations {
         static let padding: CGFloat = 20
         static let spacing: CGFloat = 12
     }
+    
+    
 }
