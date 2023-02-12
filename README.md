@@ -4,7 +4,7 @@
 
 Test assignment for Surf
 
-Architecture: MVC + Coordinator + Combine;
+Architecture: MVC
 User interface: UIKit;
 
 ## User Interfaces
